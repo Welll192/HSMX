@@ -24,13 +24,13 @@ const AuthForm = () => {
       
     } else {
       fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB0HUpIWcCkhTKiZjmBUSaxkjLuSPZoO0U',
+        'http://localhost:8000/api/user/registro',
         {
           method: 'POST',
           body: JSON.stringify({
             email: enteredEmail,
             password: enteredPassword,
-            returnSecureToken: true,
+           
           }),
           headers: {
             'Content-Type': 'application/json',
