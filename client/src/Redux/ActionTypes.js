@@ -1,0 +1,3 @@
+const OBTENER_TOKEN = "OBTENER_TOKEN";
+
+export {OBTENER_TOKEN};
