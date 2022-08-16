@@ -10,7 +10,7 @@ route.post("/registro", async (req,res)=>{
         const newUser = await User.create({
             email: req.body.email,
             password: req.body.password,
-        })
+        },{writeConcern:"majority"})
     
         const saveUser = await newUser.save();
         res.status(200).json(saveUser)
