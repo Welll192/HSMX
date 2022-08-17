@@ -10,7 +10,8 @@ export function rootReducer(state = initialState, action) {
             ...state,
             token: action.payload,
         }
-        default: 
+        
+        default:
             return {
                 ...state,
             }

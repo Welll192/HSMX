@@ -1,15 +1,18 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {obtenerTOKEN} from '../../Redux/Actions.js'
 import classes from './AuthForm.module.css';
-
-const AuthForm = () => {
+import { Link } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
+const AuthForm = (props) => {
   const [isLogin, setIsLogin] = useState(true);
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
-  const estado = useSelector(state => state);
+  const token = useSelector(state => state.token);
   const dispatch = useDispatch();
+
+  const history = useHistory();
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -43,8 +46,7 @@ const AuthForm = () => {
        .then(json => {
 
           console.log(json);
-          dispatch(obtenerTOKEN(json.accessToken));
-         
+          if(json.accessToken) dispatch(obtenerTOKEN(json.accessToken));
         });
     } else {
       fetch(
@@ -71,7 +73,10 @@ const AuthForm = () => {
         }
       });
     }
+   
   };
+  
+  
   return (
     <section className={classes.auth}>
       <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
@@ -86,13 +91,13 @@ const AuthForm = () => {
         </div>
         <div className={classes.actions}>
           <button>{isLogin ? 'Login' : 'Create Account'}</button>
-          <button
-            type='button'
-            className={classes.toggle}
-            onClick={switchAuthModeHandler}
-          >
-            {isLogin ? 'Create new account' : 'Login with existing account'}
-          </button> 
+            <button 
+              type='button'
+              className={classes.toggle}
+              onClick={switchAuthModeHandler}
+            >
+              {isLogin ? 'Create new account' : 'Login with existing account'}
+            </button> 
         </div>
       </form>
     </section>
