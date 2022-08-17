@@ -1,7 +1,8 @@
-import {OBTENER_TOKEN} from './ActionTypes.js';
+import {OBTENER_TOKEN, GUARDAR_ID} from './ActionTypes.js';
 
 const initialState = {
     token: "",
+    id:"",
 }
 export function rootReducer(state = initialState, action) {
     switch(action.type) {
@@ -10,7 +11,11 @@ export function rootReducer(state = initialState, action) {
             ...state,
             token: action.payload,
         }
-        
+        case GUARDAR_ID:
+            return {
+                ...state,
+                id:action.payload,
+            }
         default:
             return {
                 ...state,

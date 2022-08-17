@@ -1,12 +1,20 @@
 import Style from './ProfileForm.module.css'
 import { useState, useEffect} from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { guardarID } from '../../Redux/Actions';
 
 const ProfileForm = () => {
+  const dispatch = useDispatch();
+  const idSave = useSelector(state => state.id);
+
   const [stateContacts, setStateContacts] = useState(false);
+
   const [name, setName] = useState("");
   const [number, setNumber] = useState("")
 
+  const [nameEdit, setNameEdit] = useState("");
+  const [numberEdit, setNumberEdit] = useState("");
+  
   const [usuarios, setUsuarios] = useState("");
 
   const token = useSelector(state => state.token);
@@ -21,6 +29,12 @@ const ProfileForm = () => {
   }
   const changeNumber = (e) => {
     setNumber(e.target.value);
+  }
+  const changeNameEdit = (e) => {
+    setNameEdit(e.target.value);
+  }
+  const changeNumberEdit = (e) => {
+    setNumberEdit(e.target.value);
   }
 
   const formControler = (e)=>{
@@ -48,6 +62,41 @@ const ProfileForm = () => {
     setStateContacts(stateContacts=>!stateContacts);
     e.preventDefault();
   }
+
+  const removeController = (id) => {
+    fetch(
+      'http://localhost:8000/api/contact/DELETE',
+      {
+        method: 'DELETE',
+        body: JSON.stringify({
+          id: id,
+        }),
+        headers: {
+          'tokenKey':'bearer '+token,
+          'Content-Type': 'application/json',
+        },
+      }
+    ).then(res=>res.json())
+    .then(res=> console.log(res));    
+  }
+  const editController = (idSave) => {
+    fetch(
+      'http://localhost:8000/api/contact/update',
+      {
+        method: 'PATCH',
+        body: JSON.stringify({
+          id: idSave,
+          first_name: nameEdit,
+          telf_number: numberEdit,
+        }),
+        headers: {
+          'tokenKey':'bearer '+token,
+          'Content-Type': 'application/json',
+        },
+      }
+    ).then(res=>res.json())
+    .then(res=> console.log(res));  
+  }
   useEffect(() => {
     fetch(
       "http://localhost:8000/api/contact/get",
@@ -66,9 +115,10 @@ const ProfileForm = () => {
     {usuarios.length === 0? <h1>No tienes contactos añadidos</h1> :
       <div className={Style.contenedor}>
         {usuarios.map(e=>{
+       
           return(
             
-            <div key={e.id} className={Style.contenedorCard}>
+            <div key={e._id} className={Style.contenedorCard}>
 
 
               <div class="card">
@@ -79,17 +129,32 @@ const ProfileForm = () => {
                 </div>
                 <ul class="card-social" >
                   <li class="card-social__item">
-                      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M14 9h3l-.375 3H14v9h-3.89v-9H8V9h2.11V6.984c0-1.312.327-2.304.984-2.976C11.75 3.336 12.844 3 14.375 3H17v3h-1.594c-.594 0-.976.094-1.148.281-.172.188-.258.5-.258.938V9z"></path>
-                    </svg></li>
-                      <li class="card-social__item">
-                      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20.875 7.5v.563c0 3.28-1.18 6.257-3.54 8.93C14.978 19.663 11.845 21 7.938 21c-2.5 0-4.812-.687-6.937-2.063.5.063.86.094 1.078.094 2.094 0 3.969-.656 5.625-1.968a4.563 4.563 0 0 1-2.625-.915 4.294 4.294 0 0 1-1.594-2.226c.375.062.657.094.844.094.313 0 .719-.063 1.219-.188-1.031-.219-1.899-.742-2.602-1.57a4.32 4.32 0 0 1-1.054-2.883c.687.328 1.375.516 2.062.516C2.61 9.016 1.938 7.75 1.938 6.094c0-.782.203-1.531.609-2.25 2.406 2.969 5.515 4.547 9.328 4.734-.063-.219-.094-.562-.094-1.031 0-1.281.438-2.36 1.313-3.234C13.969 3.437 15.047 3 16.328 3s2.375.484 3.281 1.453c.938-.156 1.907-.531 2.907-1.125-.313 1.094-.985 1.938-2.016 2.531.969-.093 1.844-.328 2.625-.703-.563.875-1.312 1.656-2.25 2.344z"></path>
-                    </svg></li>
+
+
+                    <a onClick={()=>{dispatch(guardarID(e._id))}} class="btn"  data-bs-toggle="modal" data-bs-target="#exampleModal"x>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="40" height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#00b341" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
+                        <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
+                        <line x1="16" y1="5" x2="19" y2="8" />
+                      </svg>
+                    </a>
+
+
+
+                  </li>
                   <li class="card-social__item">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M19.547 3c.406 0 .75.133 1.031.398.281.266.422.602.422 1.008v15.047c0 .406-.14.766-.422 1.078a1.335 1.335 0 0 1-1.031.469h-15c-.406 0-.766-.156-1.078-.469C3.156 20.22 3 19.86 3 19.453V4.406c0-.406.148-.742.445-1.008C3.742 3.133 4.11 3 4.547 3h15zM8.578 18V9.984H6V18h2.578zM7.36 8.766c.407 0 .743-.133 1.008-.399a1.31 1.31 0 0 0 .399-.96c0-.407-.125-.743-.375-1.009C8.14 6.133 7.813 6 7.406 6c-.406 0-.742.133-1.008.398C6.133 6.664 6 7 6 7.406c0 .375.125.696.375.961.25.266.578.399.984.399zM18 18v-4.688c0-1.156-.273-2.03-.82-2.624-.547-.594-1.258-.891-2.133-.891-.938 0-1.719.437-2.344 1.312V9.984h-2.578V18h2.578v-4.547c0-.312.031-.531.094-.656.25-.625.687-.938 1.312-.938.875 0 1.313.578 1.313 1.735V18H18z"></path>
-                    </svg>
+
+                    <a onClick={()=>removeController(e._id)}>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="40" height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#00b341" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <line x1="4" y1="7" x2="20" y2="7" />
+                        <line x1="10" y1="11" x2="10" y2="17" />
+                        <line x1="14" y1="11" x2="14" y2="17" />
+                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                      </svg>
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -99,6 +164,9 @@ const ProfileForm = () => {
         })}
       </div>
     }
+
+
+    
     <div>
       <h2 onClick={contacts}>Agregar contactos</h2>
       {stateContacts && 
@@ -121,6 +189,29 @@ const ProfileForm = () => {
         </div>
       }
     </div>
+      {/* <!-- Modal --> */}
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+              <form class="form">
+                <h2 class="h2">Edit Contact</h2>
+                <p class="p" type="Name:"><input   onChange={changeNameEdit} value={nameEdit} placeholder="Write your name here.."></input></p>
+                <p class="p" type="Email:"><input  onChange={changeNumberEdit} value={numberEdit} placeholder="Write your Phone Number here.."></input></p>
+              </form>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button onClick={()=>editController(idSave)} type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </> 
   );
 }
