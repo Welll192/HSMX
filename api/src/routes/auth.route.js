@@ -1,7 +1,8 @@
 const route = require("express").Router()
 const User = require("../models/Usuario")
 const jwt = require("jsonwebtoken")
-const { json } = require("express")
+const CryptJS = require("crypto-js")
+require("dotenv").config()
 // REGISTRO
 route.post("/registro", async (req,res)=>{
 
@@ -9,7 +10,7 @@ route.post("/registro", async (req,res)=>{
     
         const newUser = await User.create({
             email: req.body.email,
-            password: req.body.password,
+            password: CryptJS.AES.encrypt(req.body.password,process.env.CRYPTO_KEY).toString(),
         },{writeConcern:"majority"})
     
         const saveUser = await newUser.save();
@@ -34,7 +35,9 @@ route.post("/login", async (req,res)=>{
     
         if(!findUser) throw("Usuario Equivocado")
 
-        if(findUser.password!=password) throw("Contraseña equivocada")
+        passwordDecrypted = CryptJS.AES.decrypt(findUser.password,process.env.CRYPTO_KEY).toString(CryptJS.enc.Utf8)
+
+        if(passwordDecrypted!=password) throw("Contraseña equivocada")
 
         const accessToken = jwt.sign({email: email},"MYSECRETKEY",{expiresIn:"1d"})
 
