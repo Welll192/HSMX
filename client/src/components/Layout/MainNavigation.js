@@ -10,7 +10,7 @@ const MainNavigation = () => {
     <header className={classes.header}>
       
       <Link to='/'>
-        <div className={classes.logo}>HS LOGINS XD</div>
+        <div className={classes.logo}>HSMX</div>
       </Link>
       <nav>
         <ul>
@@ -21,7 +21,7 @@ const MainNavigation = () => {
           </>:null}
           {token!=="" ? <>
             <li>
-              <Link to='/profile'>Profile</Link>
+              <Link to='/profile'>Contacts</Link>
             </li>
           <li>
             <button onClick={() => dispatch(obtenerTOKEN(""))}>Logout</button>

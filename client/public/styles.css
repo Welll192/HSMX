@@ -102,7 +102,7 @@
 
 .login-page {
   width: 360px;
-  padding: 8% 0 0;
+  padding: 4% 0 0;
   margin: auto;
 }
 .form2 {
@@ -130,7 +130,7 @@
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #4CAF50;
+  background: #354259;
   width: 100%;
   border: 0;
   padding: 15px;
@@ -141,7 +141,7 @@
   cursor: pointer;
 }
 .form2 button:hover,.form button:active,.form button:focus {
-  background: #43A047;
+  background: #576b8c;
 }
 .form2 .message {
   margin: 15px 0 0;
@@ -189,10 +189,46 @@
   color: #EF3B3A;
 }
 body {
-  background: #bfff00; /* fallback for old browsers */
-  background: rgb(141,194,111);
-  background: linear-gradient(90deg, rgba(141,194,111,1) 0%, rgba(118,184,82,1) 50%);
-  font-family: "Roboto", sans-serif;
+  background-color: #ECE5C7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
 }
+
+/* From uiverse.io by @nikk7007 */
+.button2 {
+  width: 160px;
+  padding: 0.8em 1.8em;
+  border: 2px solid #354259;
+  position: relative;
+  overflow: hidden;
+  background-color: transparent;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 16px;
+  transition: .3s;
+  z-index: 1;
+  font-family: inherit;
+  color: #354259;
+ }
+ 
+ .button2::before {
+  content: '';
+  width: 0;
+  height: 300%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: #354259;
+  transition: .5s ease;
+  display: block;
+  z-index: -1;
+ }
+ 
+ .button2:hover::before {
+  width: 105%;
+ }
+ 
+ .button2:hover {
+  color: white;
+ }
