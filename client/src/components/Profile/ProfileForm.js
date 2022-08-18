@@ -40,7 +40,7 @@ const ProfileForm = () => {
   const formControler = (e)=>{
     console.log(token);
      fetch(
-        'http://localhost:8000/api/contact/create',
+        'https://hsmxcontacts.herokuapp.com/api/contact/create',
         {
           method: 'POST',
           body: JSON.stringify({
@@ -65,7 +65,7 @@ const ProfileForm = () => {
 
   const removeController = (id) => {
     fetch(
-      'http://localhost:8000/api/contact/DELETE',
+      'https://hsmxcontacts.herokuapp.com/api/contact/DELETE',
       {
         method: 'DELETE',
         body: JSON.stringify({
@@ -81,7 +81,7 @@ const ProfileForm = () => {
   }
   const editController = (idSave) => {
     fetch(
-      'http://localhost:8000/api/contact/update',
+      'https://hsmxcontacts.herokuapp.com/api/contact/update',
       {
         method: 'PATCH',
         body: JSON.stringify({
@@ -99,7 +99,7 @@ const ProfileForm = () => {
   }
   useEffect(() => {
     fetch(
-      "http://localhost:8000/api/contact/get",
+      "https://hsmxcontacts.herokuapp.com/api/contact/get",
       {
         method: 'GET',
         headers: {

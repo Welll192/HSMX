@@ -30,7 +30,7 @@ const AuthForm = (props) => {
 
     if (isLogin) {
       fetch(
-        'http://localhost:8000/api/user/auth/login',
+        'https://hsmxcontacts.herokuapp.com/api/user/auth/login',
         {
           method: 'POST',
           body: JSON.stringify({
@@ -50,7 +50,7 @@ const AuthForm = (props) => {
         });
     } else {
       fetch(
-        'http://localhost:8000/api/user/auth/registro',
+        'https://hsmxcontacts.herokuapp.com/api/user/auth/registro',
         {
           method: 'POST',
           body: JSON.stringify({
